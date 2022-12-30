@@ -52,36 +52,34 @@ def generarRarFotos (ids):
 def generarFotosCoordenadas(ids):                                        
     bd = obtener_conexion()
     conn = bd.cursor(pymysql.cursors.DictCursor)
-    conn.execute("SELECT D.*, E.`U_latitud`,E.`U_longitud` FROM db_ipse_7_0.Fotos_encuesta D INNER JOIN `db_ipse_7_0`.`Ubicacion` E ON D.`Id_Encuesta` = E.`Id_Encuesta` WHERE D.IsDelete = 0  AND  D.`rutaserver` != 'NO ENCONTRADO ARCHIVO LOCAL' AND D.Id_Encuesta IN ("+ids+");")
+    conn.execute("SELECT D.*, A.`Latitud`,A.`Longitud` FROM db_liwa.Fotos_Tecnico D INNER JOIN db_liwa.Tecnico A ON D.`Id_Encuesta` = A.`Id_Encuesta` WHERE D.IsDelete = 0  AND D.`Rutaserver` != 'NO ENCONTRADO ARCHIVO LOCAL' AND D.Id_Encuesta IN ("+ids+");")
     fotos=conn.fetchall()
     if len(fotos) > 0:
         for foto in fotos:
-            print( "latitud: " + foto['U_latitud'] +" , Longitud: " + foto['U_longitud'])
+            print( "latitud: " + foto['Latitud'] +" , Longitud: " + foto['Longitud'])
             if os.path.exists("imagenes/"+foto['Id_Encuesta']):
-                with urllib.request.urlopen('https://www.php.engenius.com.co'+foto['rutaserver']) as url:
+                with urllib.request.urlopen('https://www.php.engenius.com.co'+foto['Rutaserver']) as url:
                     data = url.read()
                 file = BytesIO(data)
-                im = Image.open(file)
-                my_image = im.convert('RGB')
+                my_image = Image.open(file)
                 my_image = my_image.resize((3500,2400))
                 title_font = ImageFont.truetype('src/fotos/Roboto-Black.ttf', 100)
-                title_text = "latitud: " + foto['U_latitud'] +" , Longitud: " + foto['U_longitud']
+                title_text = "latitud: " + foto['Latitud'] +" , Longitud: " + foto['Longitud']
                 image_editable = ImageDraw.Draw(my_image)
                 image_editable.text((200,2100), title_text, (237, 230, 500), font=title_font)
-                my_image.save("imagenes/"+foto['Id_Encuesta']+"/"+foto['Id_Foto_Encuesta']+".jpg")
+                my_image.save("imagenes/"+foto['Id_Encuesta']+"/"+foto['Id_FotoT']+".jpg")
             else:
                 os.mkdir("imagenes/"+foto['Id_Encuesta'])
-                with urllib.request.urlopen('https://www.php.engenius.com.co'+foto['rutaserver']) as url:
+                with urllib.request.urlopen('https://www.php.engenius.com.co'+foto['Rutaserver']) as url:
                     data = url.read()
                 file = BytesIO(data)
-                im = Image.open(file)
-                my_image = im.convert('RGB')
+                my_image = Image.open(file)
                 my_image = my_image.resize((3500,2400))
                 title_font = ImageFont.truetype('src/fotos/Roboto-Black.ttf', 100)
-                title_text = "latitud: " + foto['U_latitud'] +" , Longitud: " + foto['U_longitud']
+                title_text = "latitud: " + foto['Latitud'] +" , Longitud: " + foto['Longitud']
                 image_editable = ImageDraw.Draw(my_image)
                 image_editable.text((200,2100), title_text, (237, 230, 500), font=title_font)
-                my_image.save("imagenes/"+foto['Id_Encuesta']+"/"+foto['Id_Foto_Encuesta']+".jpg")
+                my_image.save("imagenes/"+foto['Id_Encuesta']+"/"+foto['Id_FotoT']+".jpg")
         else:
             print("No trae fotos")
 if __name__ == "__main__":

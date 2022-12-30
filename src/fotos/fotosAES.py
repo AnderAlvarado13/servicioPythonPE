@@ -52,7 +52,7 @@ def generarRarFotos (ids):
 def generarFotosCoordenadas(ids):                                        
     bd = obtener_conexion()
     conn = bd.cursor(pymysql.cursors.DictCursor)
-    conn.execute("SELECT D.*, E.`U_latitud`,E.`U_longitud` FROM db_ipse_7_0.Fotos_encuesta D INNER JOIN `db_ipse_7_0`.`Ubicacion` E ON D.`Id_Encuesta` = E.`Id_Encuesta` WHERE D.IsDelete = 0  AND  D.`rutaserver` != 'NO ENCONTRADO ARCHIVO LOCAL' AND D.Id_Encuesta IN ("+ids+");")
+    conn.execute("SELECT D.*, E.`U_latitud`,E.`U_longitud` FROM aes2021.Fotos_encuesta D INNER JOIN `aes2021`.`Ubicacion` E ON D.`Id_Encuesta` = E.`Id_Encuesta` WHERE D.IsDelete = 0  AND D.`rutaserver` != 'NO ENCONTRADO ARCHIVO LOCAL' AND D.Id_Encuesta IN  ("+ids+");")
     fotos=conn.fetchall()
     if len(fotos) > 0:
         for foto in fotos:
@@ -61,8 +61,7 @@ def generarFotosCoordenadas(ids):
                 with urllib.request.urlopen('https://www.php.engenius.com.co'+foto['rutaserver']) as url:
                     data = url.read()
                 file = BytesIO(data)
-                im = Image.open(file)
-                my_image = im.convert('RGB')
+                my_image = Image.open(file)
                 my_image = my_image.resize((3500,2400))
                 title_font = ImageFont.truetype('src/fotos/Roboto-Black.ttf', 100)
                 title_text = "latitud: " + foto['U_latitud'] +" , Longitud: " + foto['U_longitud']
@@ -74,8 +73,7 @@ def generarFotosCoordenadas(ids):
                 with urllib.request.urlopen('https://www.php.engenius.com.co'+foto['rutaserver']) as url:
                     data = url.read()
                 file = BytesIO(data)
-                im = Image.open(file)
-                my_image = im.convert('RGB')
+                my_image = Image.open(file)
                 my_image = my_image.resize((3500,2400))
                 title_font = ImageFont.truetype('src/fotos/Roboto-Black.ttf', 100)
                 title_text = "latitud: " + foto['U_latitud'] +" , Longitud: " + foto['U_longitud']

@@ -4,8 +4,15 @@ import os
 import csv, operator
 from flask_cors import CORS, cross_origin
 from excel.generacionExcel import *
-from pdf.pdfLineaColectora import *
+from pdf.ejemploPdf import *
+# from pdf.generacionPdf import *
+# from pdf.pdfLineaColectoraDos import *
+# from pdf.pdfLineaColectora import *
+# from pdf.pdfAOM import *
+# from pdf.pdfAOMfotos import *
 from fotos.ejemploFotos import *
+# from fotos.fotosAOM import *
+# from fotos.fotosAES import *
 import PyPDF2 
 from reportlab.pdfgen import canvas
 from reportlab.lib.enums import TA_JUSTIFY
